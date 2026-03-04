@@ -39,7 +39,6 @@
 
 **Ответственность:**
 - Генерация уникальных кодов
-- Проверка дубликатов
 - Подсчет статистики
 - Бизнес-валидация
 
@@ -74,12 +73,11 @@
 ### Создание короткой ссылки:
 
 ```
-1. Client → POST /api/v1/shorten
+1. Client → POST /shorten
               ↓
 2. routes.py → Валидация через LinkCreate schema
               ↓
 3. LinkService → Бизнес-логика:
-                 - Проверка дубликатов
                  - Генерация/валидация кода
               ↓
 4. LinkRepository → Создание записи в БД
@@ -102,7 +100,7 @@
               ↓
 4. LinkRepository → SELECT + UPDATE в БД
               ↓
-5. routes.py → HTTP 307 Redirect
+5. routes.py → HTTP 302 Redirect
               ↓
 6. Client ← Redirect to original_url
 ```
@@ -116,12 +114,10 @@
 ```sql
 CREATE TABLE links (
     id SERIAL PRIMARY KEY,
-    original_url VARCHAR NOT NULL,
-    short_id VARCHAR(10) UNIQUE NOT NULL,
-    clicks INTEGER DEFAULT 0,
-    is_active BOOLEAN DEFAULT TRUE,
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP
+    short_id VARCHAR(12) UNIQUE NOT NULL,
+    original_url TEXT NOT NULL,
+    clicks BIGINT DEFAULT 0 NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW()
 );
 ```
 
@@ -161,7 +157,7 @@ CREATE TABLE links (
 
 2. **Integration тесты:**
    - Тестирование API endpoints
-   - Реальная тестовая БД (SQLite in-memory)
+   - Реальная тестовая БД (PostgreSQL, из .env.test)
 
 <!-- 3. **E2E тесты:**
    - Полный цикл: создание → редирект → статистика -->
