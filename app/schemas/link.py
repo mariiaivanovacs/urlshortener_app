@@ -8,11 +8,6 @@ from pydantic import BaseModel, HttpUrl
 class ShortenRequest(BaseModel):
     url: HttpUrl
 
-    # model_config = {
-    #     "json_schema_extra": {"example": {"url": "https://www.example.com/very/long/path"}}
-    # }
-
-
 class ShortenResponse(BaseModel):
     short_id: str
     short_url: str

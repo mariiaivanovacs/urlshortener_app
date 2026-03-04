@@ -1,9 +1,4 @@
-"""create links table
 
-Revision ID: 0001
-Revises:
-Create Date: 2026-03-05
-"""
 from alembic import op
 import sqlalchemy as sa
 

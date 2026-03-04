@@ -6,9 +6,7 @@ logging.basicConfig(level=logging.INFO)
 BASE = settings.base_domain
 
 
-# ---------------------------------------------------------------------------
 # POST /shorten
-# ---------------------------------------------------------------------------
 
 def test_shorten_returns_201(client):
     # first test function with logging
@@ -18,8 +16,7 @@ def test_shorten_returns_201(client):
     body = resp.json()
     print(f"Response: {body}")
 
-    # assert body["short_url"] == f"{BASE}/{body['short_id']}"
-    # assert body["short_url"] == f"{BASE}/{body['short_id']}"
+    assert body["short_url"] == f"{BASE}/{body['short_id']}"
     assert body["original_url"] == "http://testserver/long/path"
 
 
@@ -34,9 +31,7 @@ def test_shorten_invalid_url_returns_422(client):
     assert resp.status_code == 422
 
 
-# ---------------------------------------------------------------------------
 # GET /{short_id}  (redirect)
-# ---------------------------------------------------------------------------
 
 def test_redirect_follows_to_original(client):
     short_id = client.post("/shorten", json={"url": "http://testserver/"}).json()["short_id"]
@@ -57,9 +52,8 @@ def test_redirect_unknown_id_returns_404(client):
     assert resp.status_code == 404
 
 
-# ---------------------------------------------------------------------------
+
 # GET /stats/{short_id}
-# ---------------------------------------------------------------------------
 
 def test_stats_initial_clicks_zero(client):
     body = client.post("/shorten", json={"url": "http://testserver/stats"}).json()
@@ -77,13 +71,14 @@ def test_stats_unknown_id_returns_404(client):
     assert resp.status_code == 404
 
 
-# ---------------------------------------------------------------------------
+
 # Additional Tests: Bulk Shortening & Click Tracking
-# ---------------------------------------------------------------------------
 
 def test_shorten_10_links_and_display(client):
     """Test creating 10 shortened URLs and display their short versions"""
     logging.info("\n=== Testing 10 URL shortenings ===")
+    # to test with logging and print statements
+    #pytest tests/test_redirect.py::test_shorten_10_links_and_display -v -s
 
     # List of 10 different URLs to shorten
     urls_to_shorten = [
@@ -137,6 +132,9 @@ def test_shorten_10_links_and_display(client):
 
 def test_multiple_clicks_tracking(client):
     """Test that clicks are properly tracked after multiple redirects"""
+    #to test with logging and print statements
+    #pytest tests/test_redirect.py::test_multiple_clicks_tracking -v -s
+
     logging.info("\n=== Testing multiple clicks tracking ===")
 
     # Create a shortened URL
@@ -159,7 +157,6 @@ def test_multiple_clicks_tracking(client):
     assert initial_clicks == 0
     print(f"Initial clicks: {initial_clicks}")
 
-    # Simulate multiple clicks (redirects)
     num_clicks = 15
     print(f"\nSimulating {num_clicks} clicks...")
 

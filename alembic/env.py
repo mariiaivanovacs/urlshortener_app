@@ -2,7 +2,6 @@ import sys
 from pathlib import Path
 from logging.config import fileConfig
 
-# Add the parent directory to the Python path so 'app' module can be imported
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from sqlalchemy import engine_from_config, pool
