@@ -11,6 +11,8 @@ Stack: Python 3.11, FastAPI, SQLAlchemy 2, PostgreSQL, Alembic, pytest.
 ### Local (requires PostgreSQL running)
 
 ```bash
+python3 -m venv venv OR python -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 # edit .env with your DATABASE_URL and BASE_DOMAIN
 # alembic upgrade head
@@ -283,3 +285,15 @@ Example response:
 | GET    | `/health`         | 200    | Health check                           |
 
 ---
+
+
+
+## Troubleshooting
+
+```bash
+# Stop services if  message app is not running
+docker-compose down
+docker ps -a  # check for any stale containers
+docker rm -f <any stale containers>
+docker-compose up -d
+```
