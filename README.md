@@ -297,3 +297,9 @@ docker ps -a  # check for any stale containers
 docker rm -f <any stale containers>
 docker-compose up -d
 ```
+
+```bash
+#to verify tables exists
+docker exec urlshortener_db psql -U postgres -d shortener -c "\dt"
+
+```
